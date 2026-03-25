@@ -9,6 +9,7 @@ async function askAI() {
   input.value = "";
 
   try {
+    // URL ko "/api/chat" rakhein (Vercel automatic api folder dhoond lega)
     const res = await fetch("/api/chat", {
       method: "POST",
       headers: {
@@ -19,7 +20,12 @@ async function askAI() {
 
     const data = await res.json();
 
-    chat.innerHTML += `<div class="msg ai"><b>AI:</b> ${data.reply}</div>`;
+    if (data.reply) {
+        chat.innerHTML += `<div class="msg ai"><b>AI:</b> ${data.reply}</div>`;
+    } else {
+        chat.innerHTML += `<div style="color:red;">Error: No reply from AI</div>`;
+    }
+    
     chat.scrollTop = chat.scrollHeight;
 
   } catch (error) {
